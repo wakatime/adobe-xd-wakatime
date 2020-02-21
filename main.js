@@ -1,26 +1,24 @@
 /*
- * Sample plugin scaffolding for Adobe XD.
- *
- * Visit http://adobexdplatform.com/ for API docs and more sample code.
+ * @author @jvelezpo
  */
 
+const { prompt } = require("./lib/dialogs.js");
 
-const {Rectangle, Color} = require("scenegraph"); 
+const openApiKeyDialog = async () => { 
 
-function rectangleHandlerFunction(selection) { 
+    const title = 'WakaTime';
+    const message = 'Enter your wakatime.com api key:';
 
-    const newElement = new Rectangle(); 
-    newElement.width = 100;
-    newElement.height = 50;
-    newElement.fill = new Color("Purple");
+    const result = await prompt(title, message, 'api key');
 
-    selection.insertionParent.addChild(newElement);
-    newElement.moveInParentCoordinates(100, 100);
+    if (result.which === 1) {
+        const apiKey = result.value;
+    }
 
 }
 
 module.exports = {
     commands: {
-        createRectangle: rectangleHandlerFunction
+        apiKeyDialog: openApiKeyDialog
     }
 };
