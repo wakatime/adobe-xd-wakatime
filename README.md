@@ -7,11 +7,17 @@
 
 ## Installation
 
-1. Install the WakaTime plugin from the Adobe XD plugin manager.
+1. Inside Creative Cloud go to the Marketplace tab.
 
-2. Enter your [api key][api key], then press `enter`.
+2. Select Plugins.
 
-3. Use Adobe XD and your activity will be displayed on your [WakaTime dashboard](https://wakatime.com).
+3. Search for `wakatime`.
+
+4. Click the `Get` button.
+
+5. Enter your [api key][api key], then press `enter`.
+
+6. Use Adobe XD and your activity will be displayed on your [WakaTime dashboard](https://wakatime.com).
 
 
 ## Usage
