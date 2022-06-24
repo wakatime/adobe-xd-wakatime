@@ -52,7 +52,6 @@ const sendHeartbeat = async (file, time, project, language, isWrite, lines) => {
       body: JSON.stringify({
         time: time / 1000,
         entity: file,
-        type: 'app',
         project,
         language,
         is_write: isWrite ? true : false,
