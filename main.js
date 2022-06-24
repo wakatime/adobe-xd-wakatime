@@ -79,7 +79,7 @@ const handleAction = () => {
   if (currentDocument) {
     var time = Date.now();
     if (enoughTimePassed() || lastFile !== currentDocument.name) {
-      sendHeartbeat(node.name, time, currentDocument.name, "Artboard");
+      sendHeartbeat(node.name, time, currentDocument.name, 'Artboard');
     }
   }
 };
