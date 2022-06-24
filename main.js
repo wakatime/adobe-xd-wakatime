@@ -44,18 +44,18 @@ const enoughTimePassed = () => {
   return lastAction + 120000 < Date.now();
 };
 
-const sendHeartbeat = async (file, time, project, language, isWrite, lines) => {
+const sendHeartbeat = async (file, time, project, language) => {
   const apiKey = await getApiKey();
+  if (!apiKey) return;
   try {
     await fetch('https://wakatime.com/api/v1/heartbeats', {
       method: 'POST',
       body: JSON.stringify({
         time: time / 1000,
         entity: file,
+        type: 'app',
         project,
         language,
-        is_write: isWrite ? true : false,
-        lines: lines,
         plugin: 'adobexd-wakatime/' + VERSION + ' ' + os.platform(),
       }),
       headers: {
@@ -64,29 +64,30 @@ const sendHeartbeat = async (file, time, project, language, isWrite, lines) => {
       },
     });
   } catch (err) {
-    console.log('Error:', err);
+    console.log('[WakaTime] Error:', err);
   }
   lastAction = time;
   lastFile = file;
 };
 
-const handleAction = (isWrite) => {
+const handleAction = () => {
   if (!scenegraph.selection.items.length) return;
   if (scenegraph.selection.items[0].guid == lastGUID) return;
-  lastGUID = scenegraph.selection.items[0].guid;
+  const node = scenegraph.selection.items[0];
+  lastGUID = node.guid;
   const currentDocument = application.activeDocument;
   if (currentDocument) {
     var time = Date.now();
-    if (isWrite || enoughTimePassed() || lastFile !== currentDocument.name) {
-      sendHeartbeat(currentDocument.name, time, undefined, undefined, isWrite, null);
+    if (enoughTimePassed() || lastFile !== currentDocument.name) {
+      sendHeartbeat(node.name, time, currentDocument.name, "Artboard");
     }
   }
 };
 
 (() => {
-  console.log('Initializing WakaTime plugin v' + VERSION);
+  console.log('[WakaTime] Initializing WakaTime plugin v' + VERSION);
   window.setInterval(async () => {
-    handleAction(false);
+    handleAction();
   }, 5000);
 })();
 
