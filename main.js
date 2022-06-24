@@ -64,7 +64,7 @@ const sendHeartbeat = async (file, time, project, language, isWrite, lines) => {
       },
     });
   } catch (err) {
-    console.log('Error(heartbeats):', err);
+    console.log('Error:', err);
   }
   lastAction = time;
   lastFile = file;
@@ -78,7 +78,7 @@ const handleAction = (isWrite) => {
   if (currentDocument) {
     var time = Date.now();
     if (isWrite || enoughTimePassed() || lastFile !== currentDocument.name) {
-      sendHeartbeat(currentDocument.name, time, currentDocument.name, undefined, isWrite, null);
+      sendHeartbeat(currentDocument.name, time, undefined, undefined, isWrite, null);
     }
   }
 };
