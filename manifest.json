@@ -1,5 +1,7 @@
 {
   "name": "WakaTime",
+  "version": "1.0.0",
+  "description": "Automatic time tracking and metrics generated from your XD usage.",
   "host": {
     "app": "XD",
     "minVersion": "21.0"
@@ -24,5 +26,7 @@
       "commandId": "apiKeyDialog"
     }
   ],
-  "version": "1.0.0"
+  "author": "WakaTime",
+  "keywords": ["time tracking", "productivity", "time tracker", "dashboard", "timer"],
+  "languages": ["en"]
 }
