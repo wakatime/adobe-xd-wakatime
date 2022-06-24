@@ -11,6 +11,8 @@ author:      @jvelezpo
 
 let application = require('application');
 const { shell } = require('uxp');
+let scenegraph = require("scenegraph");
+const os = require('os');
 
 const Preferences = require('./lib/preferences');
 const Libs = require('./lib/libs');
@@ -18,7 +20,8 @@ const { prompt, errorOpenWakatime } = require("./lib/dialog/dialogs");
 
 const VERSION = '1.0.0';
 let lastAction = 0,
-    lastFile = undefined;
+    lastFile = undefined,
+    lastGUID = undefined;
 
 const openDashboardWebsite = async () => {
     const error = await errorOpenWakatime('Error', validation);
@@ -54,7 +57,7 @@ const sendHeartbeat = async (file, time, project, language, isWrite, lines) => {
                 language,
                 is_write: isWrite ? true : false,
                 lines: lines,
-                plugin: 'adobexd-wakatime/' + VERSION,
+                plugin: 'adobexd-wakatime/' + VERSION + ' ' + os.platform(),
             }),
             headers: {
                 'Authorization': 'Basic ' + Libs.btoa(apiKey),
@@ -69,18 +72,22 @@ const sendHeartbeat = async (file, time, project, language, isWrite, lines) => {
 };
 
 const handleAction = (isWrite) => {
-    const currentDocument = application.activeDocument;
-    if (currentDocument) {
-        var time = Date.now();
-        if (isWrite || enoughTimePassed() || lastFile !== currentDocument.name) {
-            sendHeartbeat(currentDocument.name, time, currentDocument.name, undefined, isWrite, null);
-        }
+  if (!scenegraph.selection.items.length) return;
+  if (scenegraph.selection.items[0].guid == lastGUID) return;
+  lastGUID = scenegraph.selection.items[0].guid;
+  const currentDocument = application.activeDocument;
+  if (currentDocument) {
+    var time = Date.now();
+    if (isWrite || enoughTimePassed() || lastFile !== currentDocument.name) {
+      sendHeartbeat(currentDocument.name, time, currentDocument.name, undefined, isWrite, null);
     }
+  }
 }
 
 (() => {
+    console.log("Initializing WakaTime plugin v" + VERSION);
     window.setInterval(async () => {
-        // handleAction(true);
+        handleAction(false);
     }, 5000);
 }
 )();
