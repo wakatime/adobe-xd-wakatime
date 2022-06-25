@@ -47,7 +47,7 @@ const sendHeartbeat = async (file, time, project, language) => {
   const apiKey = await getApiKey();
   if (!apiKey) return;
   try {
-    console.log('[WakaTime] Sending heartbeat: ', file);
+    //console.log('[WakaTime] Sending heartbeat: ', file);
     await fetch('https://wakatime.com/api/v1/heartbeats', {
       method: 'POST',
       body: JSON.stringify({
@@ -79,7 +79,7 @@ const handleAction = () => {
   if (currentDocument) {
     var time = Date.now();
     if (enoughTimePassed() || lastFile !== currentDocument.name) {
-      sendHeartbeat(node.name, time, currentDocument.name, 'Artboard');
+      sendHeartbeat(node.constructor.name, time, currentDocument.name, 'Artboard');
     }
   }
 };
