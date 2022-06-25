@@ -12,7 +12,6 @@ author:      @jvelezpo
 let application = require('application');
 const { shell } = require('uxp');
 let scenegraph = require('scenegraph');
-const os = require('os');
 
 const Preferences = require('./lib/preferences');
 const Libs = require('./lib/libs');
@@ -48,6 +47,7 @@ const sendHeartbeat = async (file, time, project, language) => {
   const apiKey = await getApiKey();
   if (!apiKey) return;
   try {
+    console.log('[WakaTime] Sending heartbeat: ', file);
     await fetch('https://wakatime.com/api/v1/heartbeats', {
       method: 'POST',
       body: JSON.stringify({
@@ -56,7 +56,7 @@ const sendHeartbeat = async (file, time, project, language) => {
         type: 'app',
         project,
         language,
-        plugin: 'adobexd-wakatime/' + VERSION + ' ' + os.platform(),
+        plugin: 'adobexd-wakatime/' + VERSION,
       }),
       headers: {
         Authorization: 'Basic ' + Libs.btoa(apiKey),
